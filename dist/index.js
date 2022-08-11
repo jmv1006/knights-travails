@@ -8,5 +8,5 @@ function createGame() {
     return { gameboard, knight };
 }
 const { gameboard, knight } = createGame();
-knight.knightMoves([0, 0], [4, 6]);
+knight.knightMoves([0, 0], [3, 3]);
 //# sourceMappingURL=index.js.map
