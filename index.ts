@@ -12,4 +12,4 @@ function createGame() {
 
 const {gameboard, knight} = createGame();
 
-knight.knightMoves([0, 0], [3, 3]);
+knight.knightMoves([3, 3], [1, 1]);
