@@ -9,13 +9,4 @@ function createGame() {
 }
 const { gameboard, knight } = createGame();
 knight.knightMoves([3, 3], [1, 1]);
-let moves = {
-    "cat": [2, 1]
-};
-let coords = [9, 5];
-moves[coords.toString()] = 1;
-if (coords.toString() in moves) {
-    console.log('yes');
-}
-;
 //# sourceMappingURL=index.js.map
