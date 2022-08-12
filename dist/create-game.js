@@ -1,14 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Knight = exports.GameBoard = void 0;
-class TreeNode {
-    constructor(value) {
-        this.value = value;
-        this.left = null;
-        this.right = null;
-    }
-}
-;
 class GameBoard {
     constructor() {
         this.board = [];
@@ -27,8 +19,9 @@ exports.GameBoard = GameBoard;
 class Knight {
     constructor(board) {
         this.board = board;
-        this.possibleMoves = [];
         this.list = {};
+        this.populateList(this.board[0]);
+        this.visited = {};
     }
     populateList(start) {
         if (`${start}` in this.list)
@@ -57,14 +50,36 @@ class Knight {
         });
     }
     knightMoves(start, end) {
-        this.populateList(this.board[0]);
-        console.log(this.list);
+        let queue = [];
+        let visited = {};
+        queue.push(`${start}`);
+        visited[`${start}`] = start;
+        while (queue.length > 0) {
+            let n = queue.shift();
+            const space = this.list[n];
+            if (n === `${end}`) {
+                return console.log(`found ${n}`);
+            }
+            for (let neighbor in space) {
+                if (!(`${space[neighbor]}` in visited)) {
+                    visited[`${space[neighbor]}`] = space[neighbor];
+                    queue.push(`${space[neighbor]}`);
+                }
+            }
+        }
     }
-    dfs(root, target) {
-        if (root == null)
-            return;
-        this.dfs(root.left, target);
-        this.dfs(root.right, target);
+    knightMovesDfs(start, end, moves) {
+        if (!(`${start}` in this.visited)) {
+            const space = this.list[start];
+            this.visited[`${start}`] = start;
+            moves++;
+            if (`${start}` === `${end}`) {
+                return console.log(`found space ${end} in ${moves - 1} moves`);
+            }
+            for (let neighbor in space) {
+                this.knightMovesDfs(space[neighbor], end, moves);
+            }
+        }
     }
 }
 exports.Knight = Knight;

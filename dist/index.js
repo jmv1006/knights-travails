@@ -7,6 +7,7 @@ function createGame() {
     const knight = new create_game_1.Knight(gameboard.board);
     return { gameboard, knight };
 }
-const { gameboard, knight } = createGame();
-knight.knightMoves([3, 3], [1, 1]);
+const { knight } = createGame();
+knight.knightMoves([3, 3], [7, 5]);
+//knight.knightMovesDfs([3, 3], [8, 8], 0);
 //# sourceMappingURL=index.js.map

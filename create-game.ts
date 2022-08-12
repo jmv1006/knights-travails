@@ -1,14 +1,3 @@
-class TreeNode {
-    value: Array<any>;
-    left: TreeNode | null;
-    right: TreeNode | null;
-
-    constructor(value: Array<any>) {
-        this.value = value
-        this.left = null;
-        this.right = null;
-    }
-};
 class GameBoard {
     board: Array<any>;
 
@@ -28,14 +17,15 @@ class GameBoard {
 }
 
 class Knight {
-    possibleMoves: Array<any>;
     board: any;
     list: any;
-    
+    visited: any;
+
     constructor(board: any) {
         this.board = board;
-        this.possibleMoves = [];
         this.list = {};
+        this.populateList(this.board[0])
+        this.visited = {};
     }
 
     populateList(start: any): any {
@@ -70,15 +60,46 @@ class Knight {
     }
    
     knightMoves(start: any, end: any) {
-        this.populateList(this.board[0])
-        console.log(this.list)
+        let queue = [];
+        let visited: any = {};
+
+        queue.push(`${start}`);
+        visited[`${start}`] = start
+
+        while(queue.length > 0) {
+            let n: any = queue.shift()
+
+            const space = this.list[n];
+            
+            
+            if(n === `${end}`) {
+                return console.log(`found ${n}`)
+            }
+            
+
+            for(let neighbor in space) {
+                if(!(`${space[neighbor]}` in visited)) {
+                    visited[`${space[neighbor]}`] = space[neighbor];
+                    queue.push(`${space[neighbor]}`);
+                }
+            }
+        }
     }
 
-    dfs(root: TreeNode | null, target: any) {
-        if(root == null) return
+    knightMovesDfs(start: any, end: any, moves: number) {
+        if(!(`${start}` in this.visited)) {
+            const space = this.list[start];
+            this.visited[`${start}`] = start;
 
-        this.dfs(root.left, target)
-        this.dfs(root.right, target)
+            moves++;
+            if(`${start}` === `${end}`) {
+                return console.log(`found space ${end} in ${moves - 1} moves`)
+            }
+
+            for(let neighbor in space) {
+                this.knightMovesDfs(space[neighbor], end, moves)
+            }
+        }
     }
     
 }
