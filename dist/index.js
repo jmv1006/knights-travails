@@ -8,6 +8,5 @@ function createGame() {
     return { gameboard, knight };
 }
 const { knight } = createGame();
-knight.knightMoves([3, 3], [7, 5]);
-//knight.knightMovesDfs([3, 3], [8, 8], 0);
+knight.knightMoves([3, 3], [1, 0]);
 //# sourceMappingURL=index.js.map

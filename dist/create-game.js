@@ -21,7 +21,11 @@ class Knight {
         this.board = board;
         this.list = {};
         this.populateList(this.board[0]);
-        this.visited = {};
+    }
+    isOnBoard(coord) {
+        if (coord[0] >= 1 && coord[0] <= 8 && coord[1] >= 1 && coord[1] <= 8)
+            return true;
+        return false;
     }
     populateList(start) {
         if (`${start}` in this.list)
@@ -38,9 +42,9 @@ class Knight {
                 [x - 2, y - 1],
                 [x - 1, y - 2],
                 [x - 1, y + 2],
-                [x - 2, y + 1]
+                [x - 2, y + 1],
             ];
-            return possibleCombos.filter((combo) => (combo[0] >= 1 && combo[0] <= 8) && (combo[1] >= 1 && combo[1] <= 8));
+            return possibleCombos.filter((combo) => combo[0] >= 1 && combo[0] <= 8 && combo[1] >= 1 && combo[1] <= 8);
         }
         const moves = getCombos(start);
         this.list[`${start}`] = [];
@@ -50,36 +54,43 @@ class Knight {
         });
     }
     knightMoves(start, end) {
+        if (!this.isOnBoard(start) || !this.isOnBoard(end))
+            return console.log("One of the passed coordinates is not on the gameboard");
         let queue = [];
         let visited = {};
         queue.push(`${start}`);
         visited[`${start}`] = start;
+        let prev = {};
         while (queue.length > 0) {
             let n = queue.shift();
             const space = this.list[n];
             if (n === `${end}`) {
-                return console.log(`found ${n}`);
+                const moves = this.countMoves(prev, start, end);
+                console.log(`found ${n} from ${start} in ${moves} moves`);
+                return;
             }
             for (let neighbor in space) {
                 if (!(`${space[neighbor]}` in visited)) {
                     visited[`${space[neighbor]}`] = space[neighbor];
                     queue.push(`${space[neighbor]}`);
+                    if (!(`${space[neighbor]}` in prev)) {
+                        prev[`${space[neighbor]}`] = [];
+                    }
+                    prev[`${space[neighbor]}`].push(n);
                 }
             }
         }
     }
-    knightMovesDfs(start, end, moves) {
-        if (!(`${start}` in this.visited)) {
-            const space = this.list[start];
-            this.visited[`${start}`] = start;
+    countMoves(list, start, end) {
+        let moves = 0;
+        function count(start, end, moves) {
             moves++;
-            if (`${start}` === `${end}`) {
-                return console.log(`found space ${end} in ${moves - 1} moves`);
+            if (`${list[start]}` === `${end}`) {
+                return moves;
             }
-            for (let neighbor in space) {
-                this.knightMovesDfs(space[neighbor], end, moves);
-            }
+            return count(list[start], end, moves);
         }
+        return count(end, start, moves);
     }
 }
 exports.Knight = Knight;
