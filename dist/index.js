@@ -9,5 +9,8 @@ function createGame() {
     return { knight };
 }
 const { knight } = createGame();
-knight.knightMoves([8, 8], [1, 1]);
+knight.knightMoves([8, 8], [1, 2]);
+knight.knightMoves([1, 3], [1, 2]);
+knight.knightMoves([5, 8], [1, 1]);
+knight.knightMoves([1, 8], [8, 2]);
 //# sourceMappingURL=index.js.map

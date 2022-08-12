@@ -58,7 +58,8 @@ class Knight {
         let prev = {};
         while (queue.length > 0) {
             let n = queue.shift();
-            const space = this.board[n];
+            const spaceNeighbors = this.board[n];
+            //if this is the space we are looking for
             if (n === `${end}`) {
                 //returns move count and an array of the spaces knight landed on in its path
                 const { movesCount, path } = this.countMoves(prev, start, end);
@@ -68,18 +69,22 @@ class Knight {
                 });
                 return movesCount;
             }
-            for (let neighbor in space) {
-                if (!(`${space[neighbor]}` in visited)) {
-                    visited[`${space[neighbor]}`] = space[neighbor];
-                    queue.push(`${space[neighbor]}`);
-                    if (!(`${space[neighbor]}` in prev)) {
-                        prev[`${space[neighbor]}`] = [];
+            for (let neighbor in spaceNeighbors) {
+                if (!(`${spaceNeighbors[neighbor]}` in visited)) {
+                    visited[`${spaceNeighbors[neighbor]}`] = spaceNeighbors[neighbor];
+                    queue.push(`${spaceNeighbors[neighbor]}`);
+                    //checking if neighbor is in the prev dictionary
+                    if (!(`${spaceNeighbors[neighbor]}` in prev)) {
+                        prev[`${spaceNeighbors[neighbor]}`] = [];
                     }
-                    prev[`${space[neighbor]}`].push(n);
+                    prev[`${spaceNeighbors[neighbor]}`].push(n);
                 }
             }
         }
     }
+    ;
+    //counts the number of moves knight made to get to end space
+    //saves what spaces knight went from in path array by retracing steps from end --> start
     countMoves(list, start, end) {
         let moves = 0;
         let path = [];
@@ -99,6 +104,7 @@ class Knight {
         reversed.unshift(start);
         return { movesCount, path: reversed };
     }
+    ;
 }
 exports.Knight = Knight;
 //# sourceMappingURL=create-game.js.map
